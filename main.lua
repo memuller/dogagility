@@ -1,30 +1,38 @@
 -- love.load, love.update(dt) , love.draw()
--- desenhe um círculo de 50px de raio no extermo esquerdo da tela
--- e um quadrado de 100px de lado no extremo direito da tela
--- facam com que ambos caminhem em direção ao centro da tela 1px/quadro
--- após eles chegarem no centro da tela, eles devem parar de se mover.
+-- apaga esta merda toda
+-- coloque um quadrado no centro da tela
+-- faça com que este quadrado se mova para cima e para baixo conforme
+-- as setas direcionais correspondentes sejam pressionadas
 
 function love.load()
-  xCircle = 100
-  xSquare = love.graphics.getWidth()-100
-
+  xSquare = love.graphics.getWidth()/2-100
+  ySquare = 50
+  deltaYSquare = 0
+  yMovementIncrements = 5
 end
-
 
 function love.update(dt)
+  ySquare = ySquare + deltaYSquare
 
-  if xCircle <= love.window.getWidth()/2 then
-    xCircle = xCircle+1
+end
+
+function love.keypressed(k)
+  if k=="up" then
+    deltaYSquare = -yMovementIncrements
   end
 
-  if xSquare > love.window.getWidth()/2 then
-    xSquare = xSquare-1
+  if k=="down" then
+    deltaYSquare = yMovementIncrements
   end
 
 end
 
+function love.keyreleased(k)
+  deltaYSquare = 0
+end
+
+
 function love.draw()
-  love.graphics.circle("fill", xCircle, 50, 50)
-  love.graphics.rectangle("fill", xSquare, 50, 100, 100)
+  love.graphics.rectangle("fill", xSquare, ySquare, 100, 100)
 
 end
