@@ -3,6 +3,7 @@
 -- coloque um quadrado no centro da tela
 -- faça com que este quadrado se mova para cima e para baixo conforme
 -- as setas direcionais correspondentes sejam pressionadas
+-- o cachorro não deve passar dos limites da tela
 
 function love.load()
   xSquare = love.graphics.getWidth()/2-100
@@ -12,7 +13,15 @@ function love.load()
 end
 
 function love.update(dt)
-  ySquare = ySquare + deltaYSquare
+  if deltaYSquare > 0 then --indo pra baixo
+    if ySquare+100 <= love.graphics.getHeight() then
+      ySquare = ySquare + deltaYSquare
+    end
+  elseif deltaYSquare < 0 then --indo pra cima
+    if ySquare >= 0 then
+      ySquare = ySquare + deltaYSquare
+    end
+  end
 
 end
 
