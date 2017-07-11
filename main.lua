@@ -1,43 +1,25 @@
 -- love.load, love.update(dt) , love.draw()
--- apaga esta merda toda
--- coloque um quadrado no centro da tela
--- faça com que este quadrado se mova para cima e para baixo conforme
--- as setas direcionais correspondentes sejam pressionadas
--- o cachorro não deve passar dos limites da tela
+-- cachorro comece no topo da tela e desça até o final
+-- desacelerando lentamente conforme se aproxima do final
+-- velocidade do cachorro seja diretamente proporcioinal à distância restante
 
 function love.load()
   xSquare = love.graphics.getWidth()/2-100
-  ySquare = 50
+  ySquare = 0
   deltaYSquare = 0
-  yMovementIncrements = 5
+  targetY = love.graphics.getHeight() - 100
 end
 
 function love.update(dt)
-  if deltaYSquare > 0 then --indo pra baixo
-    if ySquare+100 <= love.graphics.getHeight() then
-      ySquare = ySquare + deltaYSquare
+
+  if ySquare <= targetY then
+    distancia = targetY - ySquare
+    ySquare = ySquare + distancia/50
+    if targetY - ySquare < 2 then
+      ySquare = targetY
     end
-  elseif deltaYSquare < 0 then --indo pra cima
-    if ySquare >= 0 then
-      ySquare = ySquare + deltaYSquare
-    end
   end
 
-end
-
-function love.keypressed(k)
-  if k=="up" then
-    deltaYSquare = -yMovementIncrements
-  end
-
-  if k=="down" then
-    deltaYSquare = yMovementIncrements
-  end
-
-end
-
-function love.keyreleased(k)
-  deltaYSquare = 0
 end
 
 
