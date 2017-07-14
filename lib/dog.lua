@@ -9,8 +9,9 @@ function newDog(xD, yD, speedD, deltaD)
   }
 
   dog.draw = function(dog)
+    local dogImage = love.graphics.newImage("assets/dog.jpg")
     love.graphics.setColor(255, 255, 255)
-    love.graphics.rectangle("fill", dog.x, dog.y, dog.tam, dog.tam)
+    love.graphics.draw(dogImage, dog.x, dog.y)
 
   end
 
