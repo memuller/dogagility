@@ -1,21 +1,26 @@
 -- love.load, love.update(dt) , love.draw()
 
+-- só um tipo de dado: table (hashmap, hash, dicionário)
 
+-- o objeto dog tenha uma propriedade y que representa sua posiçao Y na tela, e é usada para movimentar o cachorro/desenhar ele na posiçáo
 function love.load()
-  xSquare = love.graphics.getWidth()/2-100
-  ySquare = 50
-  deltaYSquare = 0
-  yMovementIncrements = 5
+
+  dog = {
+    y = 50,
+    x = love.graphics.getWidth()/2-100,
+    speed = 5,
+    deltaY = 0
+  }
 end
 
 function love.update(dt)
-  if deltaYSquare > 0 then --indo pra baixo
-    if ySquare+100 <= love.graphics.getHeight() then
-      ySquare = ySquare + deltaYSquare
+  if dog.deltaY > 0 then --indo pra baixo
+    if dog.y+100 <= love.graphics.getHeight() then
+      dog.y = dog.y + dog.deltaY
     end
-  elseif deltaYSquare < 0 then --indo pra cima
-    if ySquare >= 0 then
-      ySquare = ySquare + deltaYSquare
+  elseif dog.deltaY < 0 then --indo pra cima
+    if dog.y >= 0 then
+      dog.y = dog.y + dog.deltaY
     end
   end
 
@@ -23,21 +28,21 @@ end
 
 function love.keypressed(k)
   if k=="up" then
-    deltaYSquare = -yMovementIncrements
+    dog.deltaY = -dog.speed
   end
 
   if k=="down" then
-    deltaYSquare = yMovementIncrements
+    dog.deltaY = dog.speed
   end
 
 end
 
 function love.keyreleased(k)
-  deltaYSquare = 0
+  dog.deltaY = 0
 end
 
 
 function love.draw()
-  love.graphics.rectangle("fill", xSquare, ySquare, 100, 100)
-
+  love.graphics.rectangle("fill", dog.x, dog.y, 100, 100)
+  love.graphics.print(dog.y, 0, 0)
 end
