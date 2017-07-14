@@ -1,25 +1,39 @@
 -- love.load, love.update(dt) , love.draw()
--- cachorro comece no topo da tela e desça até o final
--- desacelerando lentamente conforme se aproxima do final
--- velocidade do cachorro seja diretamente proporcioinal à distância restante
+
 
 function love.load()
   xSquare = love.graphics.getWidth()/2-100
-  ySquare = 0
+  ySquare = 50
   deltaYSquare = 0
-  targetY = love.graphics.getHeight() - 100
+  yMovementIncrements = 5
 end
 
 function love.update(dt)
-
-  if ySquare <= targetY then
-    distancia = targetY - ySquare
-    ySquare = ySquare + distancia/50
-    if targetY - ySquare < 2 then
-      ySquare = targetY
+  if deltaYSquare > 0 then --indo pra baixo
+    if ySquare+100 <= love.graphics.getHeight() then
+      ySquare = ySquare + deltaYSquare
+    end
+  elseif deltaYSquare < 0 then --indo pra cima
+    if ySquare >= 0 then
+      ySquare = ySquare + deltaYSquare
     end
   end
 
+end
+
+function love.keypressed(k)
+  if k=="up" then
+    deltaYSquare = -yMovementIncrements
+  end
+
+  if k=="down" then
+    deltaYSquare = yMovementIncrements
+  end
+
+end
+
+function love.keyreleased(k)
+  deltaYSquare = 0
 end
 
 
