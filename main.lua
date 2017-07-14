@@ -2,15 +2,62 @@
 
 -- só um tipo de dado: table (hashmap, hash, dicionário)
 
--- o objeto dog tenha uma propriedade y que representa sua posiçao Y na tela, e é usada para movimentar o cachorro/desenhar ele na posiçáo
+
+-- crie um objeto representando um obstáculo, que vai ser desenhado como um quadrado vermelho
+
+-- Factory: um método cuja função é contruir e retornar objetos de uma classe
+-- crie um método chamado newObstacle que retorne um objeto obstáculo tendo x,y
+
+-- crie uma propriedade tamanho para os obstáculos que vai ser usada como lado na hora de desenhar.
+-- crie uma propriedade draw nos obstáculos cujo valor seja uma função
+-- e estafunção desenhe o objeto obstáculo.
+-- daí no love.draw vo¨ê vai chamar estas funções.
+
+-- crie uma fábrica de cachorros que retorne cachorro,
+-- que tem propriedades x, y, tamanho, speed, deltaY
+-- e tenha um método draw que seja completamente responsável por desenhar o cachoro.
+
+function newDog(xD, yD, speedD, deltaD)
+  local tam = 100
+  local dog = {
+    y = yD,
+    x = xD,
+    speed = speedD,
+    deltaY = deltaD,
+    tam = tam
+  }
+
+  dog.draw = function(dog)
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.rectangle("fill", dog.x, dog.y, dog.tam, dog.tam)
+  end
+
+return dog
+end
+
+
+function newObstacle(xO, yO)
+  local tam = 100
+  local obstacle = {
+    x = xO,
+    y = yO,
+    tam = tam,
+    draw = function()
+      love.graphics.setColor(255, 0, 0)
+      love.graphics.rectangle("fill", xO, yO, tam, tam)
+
+    end
+}
+  return obstacle
+end
+
+
 function love.load()
 
-  dog = {
-    y = 50,
-    x = love.graphics.getWidth()/2-100,
-    speed = 5,
-    deltaY = 0
-  }
+  dog = newDog(love.graphics.getWidth()/2-100, 50, 5, 0)
+  ob1 = newObstacle(500, 50)
+  ob2 = newObstacle(500, 200)
+
 end
 
 function love.update(dt)
@@ -41,8 +88,10 @@ function love.keyreleased(k)
   dog.deltaY = 0
 end
 
-
 function love.draw()
-  love.graphics.rectangle("fill", dog.x, dog.y, 100, 100)
+
+  dog.draw(dog)
+  ob1.draw()
+  ob2.draw()
   love.graphics.print(dog.y, 0, 0)
 end
