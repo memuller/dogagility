@@ -22,6 +22,9 @@
 
 -- crie dois métodos no objeto dog - moveUp e moveDown que movam o dog [velocidade] espaços para cima ou para baixo. estes métodos devem ser usados para mover o dog quando teclas correspondentes são pressionadas
 
+-- obstáculos em cada frame devem se mover continuamente para a esquerda uma quantidade de pixels igual a sua velocidade
+
+
 function newDog(xD, yD, speedD, deltaD)
   local tam = 100
   local dog = {
@@ -65,30 +68,65 @@ end
 
 function newObstacle(xO, yO)
   local tam = 100
+  local speed = 3
   local obstacle = {
     x = xO,
     y = yO,
     tam = tam,
-    draw = function()
+    speed = speed
+}
+
+    obstacle.draw = function(obstacle)
       love.graphics.setColor(255, 0, 0)
-      love.graphics.rectangle("fill", xO, yO, tam, tam)
+      love.graphics.rectangle("fill", obstacle.x, obstacle.y, obstacle.tam, obstacle.tam)
 
     end
-}
+
+    obstacle.update = function(obstacle)
+
+      obstacle.x = obstacle.x - obstacle.speed
+
+    end
+
+
   return obstacle
 end
 
 
 function love.load()
 
-  dog = newDog(love.graphics.getWidth()/2-100, 50, 5, 0)
-  vet = {newObstacle(500, 50), newObstacle(500, 200)}
+  dog = newDog(love.graphics.getWidth()/2-100, 250, 5, 0)
+  vet = {newObstacle(500, 50) } --newObstacle(650, 200)
+  morreu = false
 
 end
 
 function love.update(dt)
 
   dog:update()
+  vet[1]:update()
+  --vet[2]:update()
+  obj = vet[1]
+
+  comparisons = {
+    (dog.x <= obj.x and dog.x +100 > obj.x),
+    (obj.x <= dog.x and obj.x+100 > dog.x),
+    (dog.y <= obj.y and dog.y +100 > obj.y),
+    (obj.y <= dog.y and obj.y+100 > dog.y)
+  }
+
+  if
+    ((dog.x <= obj.x and dog.x +100 > obj.x) or
+    (obj.x <= dog.x and obj.x+100 > dog.x))
+    and
+    ((dog.y <= obj.y and dog.y +100 > obj.y) or
+    (obj.y <= dog.y and obj.y+100 > dog.y))
+  then
+    morreu = true
+  else
+    morreu = false
+  end
+
 
 end
 
@@ -111,7 +149,16 @@ function love.draw()
 
   dog:draw()
   for i, v in ipairs(vet) do
-    v.draw()
+    v:draw()
   end
   love.graphics.print(dog.y, 0, 0)
+  love.graphics.print(vet[1].x, 0, 10)
+
+  for i, c in ipairs(comparisons) do
+    love.graphics.print(tostring(c), 0+(i*40), 50)
+  end
+
+  if morreu then
+    love.graphics.print("aaaaaaa", 0, 0)
+  end
 end
