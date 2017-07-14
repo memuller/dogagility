@@ -17,6 +17,9 @@
 -- que tem propriedades x, y, tamanho, speed, deltaY
 -- e tenha um método draw que seja completamente responsável por desenhar o cachoro.
 
+-- crie um vetor com todos os obstáculos
+-- percorra este vetor chamando draw() na hora de montar a tela.
+
 function newDog(xD, yD, speedD, deltaD)
   local tam = 100
   local dog = {
@@ -32,7 +35,7 @@ function newDog(xD, yD, speedD, deltaD)
     love.graphics.rectangle("fill", dog.x, dog.y, dog.tam, dog.tam)
   end
 
-return dog
+  return dog
 end
 
 
@@ -55,8 +58,7 @@ end
 function love.load()
 
   dog = newDog(love.graphics.getWidth()/2-100, 50, 5, 0)
-  ob1 = newObstacle(500, 50)
-  ob2 = newObstacle(500, 200)
+  vet = {newObstacle(500, 50), newObstacle(500, 200)}
 
 end
 
@@ -90,8 +92,9 @@ end
 
 function love.draw()
 
-  dog.draw(dog)
-  ob1.draw()
-  ob2.draw()
+  dog:draw()
+  for i, v in ipairs(vet) do
+    v.draw()
+  end
   love.graphics.print(dog.y, 0, 0)
 end
