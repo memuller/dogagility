@@ -20,6 +20,8 @@
 -- crie um vetor com todos os obstáculos
 -- percorra este vetor chamando draw() na hora de montar a tela.
 
+-- crie dois métodos no objeto dog - moveUp e moveDown que movam o dog [velocidade] espaços para cima ou para baixo. estes métodos devem ser usados para mover o dog quando teclas correspondentes são pressionadas
+
 function newDog(xD, yD, speedD, deltaD)
   local tam = 100
   local dog = {
@@ -33,6 +35,28 @@ function newDog(xD, yD, speedD, deltaD)
   dog.draw = function(dog)
     love.graphics.setColor(255, 255, 255)
     love.graphics.rectangle("fill", dog.x, dog.y, dog.tam, dog.tam)
+
+  end
+
+  dog.update = function(dog)
+    if dog.deltaY > 0 then --indo pra baixo
+      if dog.y+100 <= love.graphics.getHeight() then
+        dog.y = dog.y + dog.deltaY
+      end
+    elseif dog.deltaY < 0 then --indo pra cima
+      if dog.y >= 0 then
+        dog.y = dog.y + dog.deltaY
+      end
+    end
+
+  end
+
+  dog.moveUp = function(dog)
+    dog.deltaY = -dog.speed
+  end
+
+  dog.moveDown = function(dog)
+    dog.deltaY = dog.speed
   end
 
   return dog
@@ -63,25 +87,18 @@ function love.load()
 end
 
 function love.update(dt)
-  if dog.deltaY > 0 then --indo pra baixo
-    if dog.y+100 <= love.graphics.getHeight() then
-      dog.y = dog.y + dog.deltaY
-    end
-  elseif dog.deltaY < 0 then --indo pra cima
-    if dog.y >= 0 then
-      dog.y = dog.y + dog.deltaY
-    end
-  end
+
+  dog:update()
 
 end
 
 function love.keypressed(k)
   if k=="up" then
-    dog.deltaY = -dog.speed
+    dog:moveUp()
   end
 
   if k=="down" then
-    dog.deltaY = dog.speed
+    dog:moveDown()
   end
 
 end
